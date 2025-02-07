@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  
+  <title>Frontend Mentor | QR code component</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    @media(max-width:375px){
+          .container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      border-radius: 15px;
+      height: 420px;
+      width: 265px;
+      background-color: hsl(0, 0%, 100%);
+      margin: 50px auto;
+    }
+       .qr-code{
+          width: 250px;
+          height: 250px;
+          margin-top: 0px;
+          padding: 10px;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+    }
+
+    }
+    body{
+      background-color: hsl(212, 45%, 89%);
+    }
+    .container{
+
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      border-radius: 15px;
+      height: 420px;
+      width: 265px;
+      background-color:hsl(0, 0%, 100%) ;
+      margin: 50px auto;
+    }
+    .qr-code{
+      width: 250px;
+      height: 250px;
+      margin-top: 0px;
+      padding: 10px;
+
+    }
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+    }
+    .text1{
+  font-family: "Outfit", serif;
+  font-optical-sizing: auto;
+  font-weight:700 ;
+  font-style: normal;
+  font-size: 15px;
+  color: hsl(218, 44%, 22%);
+}
+.text2{
+  
+   font-family: "Outfit", serif;
+    font-optical-sizing: auto;
+    font-weight:400 ;
+    font-style: normal;
+    font-size: 15px;
+    text-align: center;
+    color: hsl(216, 15%, 48%)
+}
+.text1 p{
+  margin: 0px;
+}
+
+.text2 p {
+  margin: 0px
+}
+.text2 p:nth-child(1){
+  margin-top: 15px;
+}
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="qr-code">
+      <img src="./images/image-qr-code.png" alt="">
+    </div>
+    <div class="text1">
+      <p>Improve your Frontend</p><p>skills by building project</p>
+    </div>
+    <div class="text2">
+      <p>Scan the QR code to visit Frontend
+        <p>Mentor and take you coding skills</p>
+          <p>to the next level</p>
+    </div>
+  </div>
+</body>
+</html>
