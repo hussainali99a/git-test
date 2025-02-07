@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet">
+  
+  <title>Frontend Mentor | Social links profile</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    @media(max-width:375px){
+      .container{
+        width: 40vh;
+        margin-top: 30px;
+      }
+      p{
+        font-size: 10px;
+      }
+    }
+
+    body{
+      background-color:hsl(0, 0%, 8%) ;
+    }
+    .container{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin: auto;
+      border-radius: 10px;
+      width: 55vh;
+      height: 530px;
+      background-color:hsl(0, 0%, 12%);
+    }
+    .profile_photo{
+      margin: 20px;
+    }
+    .image{
+      width: 100px;
+      border-radius: 100px;
+    }
+    h2{
+      margin-top: 0px;
+      margin-bottom: 5px;
+      color: hsl(0, 0%, 100%);
+       font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+      
+    }
+    h3{
+      margin-top: 0px;
+      color:hsl(75, 94%, 57%);
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 600;
+      font-style: normal;
+      font-size: 12px;
+    }
+    h4{
+      font-size: 15px;
+      margin-top:10px;
+      font-weight: 600;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+    p{
+      color: hsl(0, 0%, 100%);;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 14px;
+    }
+    .main_button{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .button{
+      text-align: center;
+      background-color: hsl(0, 0%, 20%) ;
+      width: 50vh;
+      height: 40px;
+      border-radius: 6px;
+      color:hsl(0, 0%, 100%) ;
+    }
+    .button:hover{
+      background-color:hsl(75, 94%, 57%);
+      color: hsl(0, 0%, 20%);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+      <div class="profile_photo">
+        <img  class="image" src="./assets/images/avatar-jessica.jpeg" alt="">
+      </div>
+      <h2>Jessica Randall</h2>
+      <h3>London, United Kingdom</h3>
+      <p>"Front-end developer and avid reader."</p>
+      <div class="main_button">
+        <div class="button">
+          <h4>Github</h4>
+        </div>
+        <div class="button">
+          <h4>Frontend Mentor</h4>
+        </div>
+        <div class="button">
+          <h4>LinkedIn</h4>
+        </div>
+        <div class="button">
+          <h4>
+            Twitter
+          </h4>
+        </div>
+        <div class="button">
+          <h4>
+            Instagram
+          </h4>
+        </div>
+      </div>
+      
+    </div>
+</body>
+</html>
