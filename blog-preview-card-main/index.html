@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet">
+  
+  <title>Frontend Mentor | Blog preview card</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    @media(max-width:375px){
+      body{
+      margin-top: 5%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: hsl(47, 88%, 63%) ;
+    }
+    .main_div{
+      width: 35vh;
+    }
+   }
+    body{
+      margin-top: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: hsl(47, 88%, 63%) ;
+    }
+    .main_div{
+      display: flex;
+      flex-direction: column;
+      justify-content:flex-start;
+      width: 55vh;
+      height:400px;
+      background-color:hsl(0, 0%, 100%) ;
+      border-right: black outset 7px;
+      border-bottom: black outset 7px;
+      border-radius: 20px;
+      border-top: black 1px solid;
+      border-left:black 1px solid;
+    }
+    img{
+      width: 280px;
+      margin: 12px;
+      border-radius: 20px;
+    }
+    .small-button{
+      background-color: hsl(47, 88%, 63%);
+      color: black;
+      text-align: center;
+      width: 80px;
+      margin-left: 12px;
+      border-radius:3px ;
+      font-size: 12px;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 800;
+      font-style: normal;
+
+    }
+    .text{
+      font-size: 14px;
+      margin-left: 12px;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+    h4{
+      margin-top: 0px;
+      margin-left: 12px;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 800;
+      font-style: normal;
+
+    }
+    .txt{
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 12px;
+      font-size: 13px;
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-style: normal;
+      color:hsl(0, 0%, 42%) ;
+    }
+    .avatar{
+      margin-top: 12px ;
+      height: 20px;
+      width: 20px;
+    }
+    .footer{display: flex;
+    flex-direction: row;
+ gap: 4px;
+align-items: center;}
+    .head{
+      font-family: "Outfit", serif;
+      font-optical-sizing: auto;
+      font-weight: 800;
+      font-style: normal;
+      color:black ;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body class="flex">
+
+ 
+  
+  <div class="main_div">
+    
+    <img src="./assets/images/illustration-article.svg" alt="">
+    <span class="small-button">Learning</span>
+    <p class="text">Published 21 Dec 2023</p>
+    <h4>HTML & CSS foundations</h4>
+    <p class="txt">These languages are the backbone of every and </p>
+    <p class="txt">website, defining structure, content</p>
+    <p class="txt">presentation.</p>
+    <div class="footer">
+    <img class="avatar" src="./assets/images/image-avatar.webp" alt="">
+    <p class="head">Greg Hooper</p>
+    </div>
+  </div>
+  <!-- <img src="./assets/images/illustration-article.svg" alt=""> -->
+</body>
+</html>
