@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Contact Us</h2>
+        <form id="contactForm" novalidate>
+            <!-- General Error Message Area -->
+            <div id="form-messages" class="form-messages" aria-live="polite"></div>
+
+            <div class="name-group">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required-star">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required>
+                    <span class="error-message" id="firstNameError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required-star">*</span></label>
+                    <input type="text" id="lastName" name="lastName" required>
+                     <span class="error-message" id="lastNameError"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required-star">*</span></label>
+                <input type="email" id="email" name="email" required>
+                 <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group query-type-group">
+                <label>Query Type <span class="required-star">*</span></label>
+                <div class="radio-options-wrapper">
+                    <div class="radio-option">
+                        <input type="radio" id="generalEnquiry" name="queryType" value="General Enquiry" required>
+                        <label for="generalEnquiry">General Enquiry</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="supportRequest" name="queryType" value="Support Request" required>
+                        <label for="supportRequest">Support Request</label>
+                    </div>
+                </div>
+                 <span class="error-message" id="queryTypeError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message <span class="required-star">*</span></label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                 <span class="error-message" id="messageError"></span>
+            </div>
+
+            <div class="form-group consent-group">
+                <input type="checkbox" id="consent" name="consent" required>
+                <label for="consent">I consent to being contacted by the team <span class="required-star">*</span></label>
+                 <span class="error-message" id="consentError"></span>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+/* Basic Reset & Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #e0f2f1; /* Light green background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* Form Container */
+.form-container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px; /* Max width for larger screens */
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    color: #222;
+    font-weight: 600;
+}
+
+/* Form Groups & Labels */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #555;
+}
+
+.required-star {
+    color: #00796b; /* Teal color for asterisk */
+}
+
+/* Input Fields & Textarea */
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #00796b; /* Teal focus border */
+    box-shadow: 0 0 0 2px rgba(0, 121, 107, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Name Fields Layout (Desktop) */
+.name-group {
+    display: flex;
+    gap: 20px; /* Space between first and last name */
+}
+
+.name-group .form-group {
+    flex: 1; /* Make each name field take equal space */
+    margin-bottom: 0; /* Remove bottom margin from individual groups */
+}
+
+/* Query Type Radios */
+.query-type-group label:first-of-type { /* Target the main "Query Type" label */
+    margin-bottom: 10px;
+}
+
+.radio-options-wrapper {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens if needed */
+}
+
+.radio-option {
+    flex: 1; /* Distribute space */
+    min-width: 150px; /* Minimum width before wrapping */
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.radio-option:has(input[type="radio"]:checked) { /* Style parent when radio is checked */
+     border-color: #00796b;
+     background-color: #e0f2f1; /* Light teal background */
+}
+
+
+.radio-option input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #00796b; /* Color for the radio dot */
+    cursor: pointer;
+    width: 16px; /* Optional: Ensure consistent size */
+    height: 16px;
+}
+
+.radio-option label {
+    margin-bottom: 0; /* Override default label margin */
+    font-weight: normal;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Consent Checkbox */
+.consent-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.consent-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #00796b;
+    cursor: pointer;
+    margin-top: -2px; /* Align better with text */
+}
+
+.consent-group label {
+    margin-bottom: 0; /* Override default label margin */
+    font-weight: normal;
+     color: #555;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background-color: #00796b; /* Teal background */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Add some space above the button */
+}
+
+button[type="submit"]:hover {
+    background-color: #004d40; /* Darker teal on hover */
+}
+
+/* Error Message Styling */
+.error-message {
+    color: #d32f2f; /* Red color for errors */
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: none; /* Hidden by default */
+    min-height: 1em; /* Prevent layout shifts when message appears */
+}
+
+.input-error {
+    border-color: #d32f2f !important; /* Add red border to invalid fields */
+}
+
+/* General Form Messages (e.g., success) */
+.form-messages {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    text-align: center;
+    display: none; /* Hidden by default */
+}
+
+.form-messages.success {
+    background-color: #e8f5e9; /* Light green background for success */
+    color: #2e7d32; /* Dark green text */
+    border: 1px solid #a5d6a7;
+    display: block;
+}
+
+.form-messages.error {
+    background-color: #ffebee; /* Light red background for error summary */
+    color: #c62828; /* Dark red text */
+    border: 1px solid #ef9a9a;
+    display: block;
+}
+
+
+/* --- Responsiveness --- */
+
+/* Mobile Styles (e.g., screens less than 600px wide) */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    /* Stack name fields vertically */
+    .name-group {
+        flex-direction: column;
+        gap: 0; /* Remove gap, rely on form-group margin */
+    }
+    .name-group .form-group {
+         margin-bottom: 20px; /* Add back margin */
+    }
+    .name-group .form-group:last-child {
+         margin-bottom: 0; /* Remove margin from the last item in the group */
+    }
+
+
+    /* Stack radio options if needed, ensure they look good vertically */
+     .radio-options-wrapper {
+         flex-direction: column;
+         gap: 10px;
+     }
+     .radio-option {
+         min-width: unset; /* Remove min-width */
+         width: 100%; /* Take full width */
+     }
+
+    button[type="submit"] {
+        padding: 12px;
+        font-size: 1em;
+    }
+}
