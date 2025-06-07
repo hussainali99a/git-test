@@ -1,37 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the app */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(0, 0%, 94%); /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px; /* Padding for mobile view */
+        }
+        .card-container {
+            background-color: hsl(0, 0%, 100%); /* White background */
+            padding: 40px;
+            border-radius: 20px;
+            border-bottom-right-radius: 120px; /* Larger bottom-right radius */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* Max width for desktop */
+            width: 100%; /* Fluid width */
+        }
+        .input-group label {
+            color: hsl(0, 1%, 44%); /* Smokey grey */
+            font-size: 14px;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .input-group input {
+            border: 1px solid hsl(0, 0%, 86%); /* Light grey border */
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: hsl(0, 0%, 8%); /* Off black text */
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+        .input-group input:focus {
+            border-color: hsl(259, 100%, 65%); /* Purple border on focus */
+        }
+        .input-group.error label {
+            color: hsl(0, 100%, 67%); /* Light red for error */
+        }
+        .input-group.error input {
+            border-color: hsl(0, 100%, 67%); /* Light red border for error */
+        }
+        .error-message {
+            color: hsl(0, 100%, 67%); /* Light red */
+            font-size: 12px;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .submit-button {
+            background-color: hsl(259, 100%, 65%); /* Purple */
+            border-radius: 9999px; /* Fully rounded */
+            padding: 20px;
+            transition: background-color 0.3s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 64px; /* Fixed width and height for the circle button */
+            height: 64px;
+        }
+        .submit-button:hover {
+            background-color: hsl(259, 78%, 56%); /* Slightly darker purple on hover */
+        }
+        .submit-button img {
+            width: 32px; /* Adjust arrow icon size */
+            height: 32px;
+        }
+        .result-text {
+            font-size: 64px; /* Large font size for numbers */
+            font-weight: 800; /* Extra bold */
+            font-style: italic;
+            color: hsl(0, 0%, 8%); /* Off black */
+            line-height: 1.1; /* Adjust line height */
+        }
+        .result-number {
+            color: hsl(259, 100%, 65%); /* Purple for numbers */
+        }
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Age calculator app</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-container {
+                padding: 30px 20px;
+                border-bottom-right-radius: 90px;
+            }
+            .input-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .input-group {
+                width: 100%; /* Full width for inputs on mobile */
+                margin-bottom: 20px;
+            }
+            .input-group:last-child {
+                margin-bottom: 0;
+            }
+            .divider-section {
+                position: relative;
+                height: 70px; /* Space for the button */
+            }
+            .submit-button-wrapper {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -32px; /* Half of button height to center it on the line */
+                z-index: 10;
+            }
+            .result-text {
+                font-size: 48px; /* Smaller font size for mobile numbers */
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="selection:bg-purple-300 selection:text-purple-900">
+    <main class="card-container">
+        <!-- Input Section -->
+        <section class="flex flex-col md:flex-row gap-4 md:gap-8 pb-10 border-b-2 border-gray-200 input-section">
+            <div class="input-group flex-1">
+                <label for="day" class="block mb-2 uppercase">Day</label>
+                <input type="number" id="day" placeholder="DD" class="w-full" min="1" max="31">
+                <p id="day-error" class="error-message hidden"></p>
+            </div>
+            <div class="input-group flex-1">
+                <label for="month" class="block mb-2 uppercase">Month</label>
+                <input type="number" id="month" placeholder="MM" class="w-full" min="1" max="12">
+                <p id="month-error" class="error-message hidden"></p>
+            </div>
+            <div class="input-group flex-1">
+                <label for="year" class="block mb-2 uppercase">Year</label>
+                <input type="number" id="year" placeholder="YYYY" class="w-full" min="1900" max="2025">
+                <p id="year-error" class="error-message hidden"></p>
+            </div>
+        </section>
 
-  Day
-  DD
+        <!-- Divider and Submit Button Section -->
+        <section class="relative h-20 md:h-12 divider-section">
+            <div class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2">
+                <button id="submit-btn" class="submit-button">
+                    <img src="https://api.iconify.design/heroicons-solid:arrow-down.svg?color=%23ffffff" alt="Calculate">
+                </button>
+            </div>
+            <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-0 submit-button-wrapper">
+                <button id="submit-btn-mobile" class="submit-button">
+                    <img src="https://api.iconify.design/heroicons-solid:arrow-down.svg?color=%23ffffff" alt="Calculate">
+                </button>
+            </div>
+        </section>
 
-  Month
-  MM
+        <!-- Result Section -->
+        <section class="mt-8">
+            <p class="result-text">
+                <span id="years-result" class="result-number">--</span> years
+            </p>
+            <p class="result-text">
+                <span id="months-result" class="result-number">--</span> months
+            </p>
+            <p class="result-text">
+                <span id="days-result" class="result-number">--</span> days
+            </p>
+        </section>
+    </main>
 
-  Year
-  YYYY
+    <script>
+        // Get DOM elements
+        const dayInput = document.getElementById('day');
+        const monthInput = document.getElementById('month');
+        const yearInput = document.getElementById('year');
+        const dayError = document.getElementById('day-error');
+        const monthError = document.getElementById('month-error');
+        const yearError = document.getElementById('year-error');
+        const yearsResult = document.getElementById('years-result');
+        const monthsResult = document.getElementById('months-result');
+        const daysResult = document.getElementById('days-result');
+        const submitButtonDesktop = document.getElementById('submit-btn');
+        const submitButtonMobile = document.getElementById('submit-btn-mobile');
 
-  -- years
-  -- months
-  -- days
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+        // Function to animate number counting up
+        function animateNumber(element, start, end, duration) {
+            let startTime = null;
+            const step = (currentTime) => {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                element.textContent = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        }
+
+        // Function to display error messages
+        function displayError(inputElement, errorElement, message) {
+            inputElement.parentElement.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+        }
+
+        // Function to clear error messages
+        function clearError(inputElement, errorElement) {
+            inputElement.parentElement.classList.remove('error');
+            errorElement.classList.add('hidden');
+            errorElement.textContent = '';
+        }
+
+        // Main calculation and validation logic
+        function calculateAge() {
+            // Clear previous errors
+            clearError(dayInput, dayError);
+            clearError(monthInput, monthError);
+            clearError(yearInput, yearError);
+
+            let isValid = true;
+
+            const day = parseInt(dayInput.value);
+            const month = parseInt(monthInput.value);
+            const year = parseInt(yearInput.value);
+
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth() + 1; // Month is 0-indexed
+            const currentDay = today.getDate();
+
+            // 1. Check for empty fields
+            if (isNaN(day)) {
+                displayError(dayInput, dayError, 'This field is required');
+                isValid = false;
+            }
+            if (isNaN(month)) {
+                displayError(monthInput, monthError, 'This field is required');
+                isValid = false;
+            }
+            if (isNaN(year)) {
+                displayError(yearInput, yearError, 'This field is required');
+                isValid = false;
+            }
+
+            // If any field is empty, stop further validation for date validity
+            if (!isValid) {
+                yearsResult.textContent = '--';
+                monthsResult.textContent = '--';
+                daysResult.textContent = '--';
+                return;
+            }
+
+            // 2. Validate day number
+            if (day < 1 || day > 31) {
+                displayError(dayInput, dayError, 'Must be a valid day');
+                isValid = false;
+            }
+
+            // 3. Validate month number
+            if (month < 1 || month > 12) {
+                displayError(monthInput, monthError, 'Must be a valid month');
+                isValid = false;
+            }
+
+            // 4. Validate year (not in future)
+            if (year > currentYear) {
+                displayError(yearInput, yearError, 'Must be in the past');
+                isValid = false;
+            } else if (year === currentYear) {
+                if (month > currentMonth) {
+                    displayError(monthInput, monthError, 'Must be in the past');
+                    isValid = false;
+                } else if (month === currentMonth && day > currentDay) {
+                    displayError(dayInput, dayError, 'Must be in the past');
+                    isValid = false;
+                }
+            }
+
+
+            // If basic validation fails, stop here
+            if (!isValid) {
+                yearsResult.textContent = '--';
+                monthsResult.textContent = '--';
+                daysResult.textContent = '--';
+                return;
+            }
+
+            // 5. Validate specific date (e.g., 31/04, Feb 29th)
+            const inputDate = new Date(year, month - 1, day); // Month is 0-indexed in Date object
+            if (inputDate.getFullYear() !== year || inputDate.getMonth() !== month - 1 || inputDate.getDate() !== day) {
+                displayError(dayInput, dayError, 'Must be a valid date');
+                displayError(monthInput, monthError, ''); // Clear message for month/year but keep error state
+                displayError(yearInput, yearError, ''); // Clear message for month/year but keep error state
+                isValid = false;
+            }
+
+            // Final check for date being in the future (after constructing the date object)
+            if (inputDate > today) {
+                displayError(dayInput, dayError, 'Must be in the past');
+                displayError(monthInput, monthError, '');
+                displayError(yearInput, yearError, '');
+                isValid = false;
+            }
+
+
+            if (isValid) {
+                // Calculate age
+                let years = currentYear - year;
+                let months = currentMonth - month;
+                let days = currentDay - day;
+
+                if (days < 0) {
+                    months--;
+                    // Get days in the previous month
+                    const prevMonthLastDay = new Date(currentYear, currentMonth - 1, 0).getDate();
+                    days += prevMonthLastDay;
+                }
+
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                // Animate the results
+                animateNumber(yearsResult, 0, years, 1000); // 1 second duration
+                animateNumber(monthsResult, 0, months, 1000);
+                animateNumber(daysResult, 0, days, 1000);
+
+            } else {
+                yearsResult.textContent = '--';
+                monthsResult.textContent = '--';
+                daysResult.textContent = '--';
+            }
+        }
+
+        // Add event listeners to buttons
+        submitButtonDesktop.addEventListener('click', calculateAge);
+        submitButtonMobile.addEventListener('click', calculateAge);
+
+        // Optional: Add event listeners for input changes to clear errors as user types
+        [dayInput, monthInput, yearInput].forEach(input => {
+            input.addEventListener('input', (e) => {
+                const id = e.target.id;
+                if (id === 'day') clearError(dayInput, dayError);
+                if (id === 'month') clearError(monthInput, monthError);
+                if (id === 'year') clearError(yearInput, yearError);
+                // Also clear other error messages if they were general date errors
+                if (dayError.textContent === 'Must be a valid date') {
+                    clearError(dayInput, dayError);
+                    clearError(monthInput, monthError);
+                    clearError(yearInput, yearError);
+                }
+                 if (dayError.textContent === 'Must be in the past') {
+                    clearError(dayInput, dayError);
+                    clearError(monthInput, monthError);
+                    clearError(yearInput, yearError);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
