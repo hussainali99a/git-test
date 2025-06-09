@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for gradients and specific design elements */
+        html.dark {
+            --bg-body: #1a1a1a;
+            --bg-card: #2b2b2b;
+            --text-primary: #f0f0f0;
+            --text-secondary: #d1d5db; /* gray-300 */
+            --border-color: #374151; /* gray-700 */
+            --placeholder-color: #9ca3af; /* gray-400 */
+        }
+
+        html.light {
+            --bg-body: #f4f4f4;
+            --bg-card: #ffffff;
+            --text-primary: #374151; /* gray-800 */
+            --text-secondary: #6b7280; /* gray-500 */
+            --border-color: #e5e7eb; /* gray-200 */
+            --placeholder-color: #a0aec0; /* gray-400 */
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .todo-item-bg {
+            background-color: var(--bg-card);
+        }
+
+        .todo-input-bg {
+            background-color: var(--bg-card);
+        }
+
+        .todo-item-border-b {
+            border-bottom-color: var(--border-color);
+        }
+
+        .text-placeholder {
+            color: var(--placeholder-color);
+        }
+
+        .checkbox-gradient {
+            background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+        }
+
+        /* Styles for drag and drop hover effect (visual feedback) */
+        .drag-over-highlight {
+            border-bottom: 2px solid #3A7BFD; /* Highlight line color */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <!-- Background Image/Hero Section -->
+    <div class="relative w-full h-48 sm:h-64 md:h-80 bg-blue-500 flex justify-center items-center overflow-hidden">
+        <img
+            src="./images/bg-desktop-dark.jpg"
+            alt="Todo App Background"
+            class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.onerror=null;this.src='https://placehold.co/1920x250/3A7BFD/FFFFFF?text=TODO+App+Background';"
+        />
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500 to-purple-700 opacity-75"></div>
+        <header class="absolute top-0 flex justify-between items-center w-full max-w-xl mx-auto p-4 z-10">
+            <h1 class="text-4xl font-bold tracking-widest text-white">TODO</h1>
+            <button
+                id="theme-toggle"
+                class="p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200"
+                aria-label="Toggle theme"
+            >
+                <!-- Sun/Moon Icon (Dynamically changed by JS) -->
+                <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" id="theme-icon">
+                    <!-- Dark theme icon (moon) - default -->
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+            </button>
+        </header>
+    </div>
+
+    <main class="w-full max-w-xl mx-auto -mt-24 z-20">
+        <!-- Loading State -->
+        <div id="loading-spinner" class="min-h-screen flex items-center justify-center text-xl" style="display: none;">
+            Loading Todo App...
+        </div>
+
+        <!-- Todo Input -->
+        <div class="todo-input-bg p-4 rounded-lg shadow-xl mb-4 flex items-center">
+            <span class="w-6 h-6 rounded-full border-2 border-gray-600 flex-shrink-0"></span>
+            <input
+                type="text"
+                id="new-todo-input"
+                placeholder="Create a new todo..."
+                class="flex-grow ml-4 py-2 px-2 focus:outline-none bg-transparent text-primary text-placeholder"
+                aria-label="Create new todo"
+            />
+        </div>
+
+        <!-- Todo List and Controls -->
+        <div class="todo-item-bg rounded-lg shadow-xl">
+            <div id="todo-list">
+                <!-- Todo items will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="flex justify-between items-center p-4 text-sm text-gray-500">
+                <span id="items-left">0 items left</span>
+                <div class="hidden sm:flex space-x-4 todo-input-bg rounded-md p-1">
+                    <button
+                        id="filter-all"
+                        class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-blue-500"
+                        aria-pressed="true"
+                    >
+                        All
+                    </button>
+                    <button
+                        id="filter-active"
+                        class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-gray-400"
+                        aria-pressed="false"
+                    >
+                        Active
+                    </button>
+                    <button
+                        id="filter-completed"
+                        class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-gray-400"
+                        aria-pressed="false"
+                    >
+                        Completed
+                    </button>
+                </div>
+                <button
+                    id="clear-completed"
+                    class="hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors duration-200 text-gray-400"
+                >
+                    Clear Completed
+                </button>
+            </div>
+
+            <!-- Mobile Filter Controls -->
+            <div class="sm:hidden flex justify-center space-x-4 todo-item-bg rounded-lg shadow-xl p-4 mt-4">
+                <button
+                    id="mobile-filter-all"
+                    class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-blue-500"
+                    aria-pressed="true"
+                >
+                    All
+                </button>
+                <button
+                    id="mobile-filter-active"
+                    class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-gray-400"
+                    aria-pressed="false"
+                >
+                    Active
+                </button>
+                <button
+                    id="mobile-filter-completed"
+                    class="font-bold hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200 text-gray-400"
+                    aria-pressed="false"
+                >
+                    Completed
+                </button>
+            </div>
+        </div>
+
+        <p class="text-center text-gray-500 text-sm mt-8">
+            Drag and drop to reorder list
+        </p>
+
+        <!-- Display current userId -->
+        <p id="user-id-display" class="text-center text-gray-500 text-xs mt-4 break-words" style="display: none;">
+            <!-- User ID will be inserted here by JS -->
+        </p>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, writeBatch, getDocs, where } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, currentUserId;
+        let todos = []; // Local state for todos
+        let currentFilter = 'all'; // 'all', 'active', 'completed'
+        let currentTheme = 'dark'; // 'light', 'dark'
+
+        const todoListElement = document.getElementById('todo-list');
+        const newTodoInput = document.getElementById('new-todo-input');
+        const itemsLeftSpan = document.getElementById('items-left');
+        const clearCompletedButton = document.getElementById('clear-completed');
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const userIdDisplay = document.getElementById('user-id-display');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        const filterButtons = {
+            all: document.getElementById('filter-all'),
+            active: document.getElementById('filter-active'),
+            completed: document.getElementById('filter-completed'),
+            mobileAll: document.getElementById('mobile-filter-all'),
+            mobileActive: document.getElementById('mobile-filter-active'),
+            mobileCompleted: document.getElementById('mobile-filter-completed')
+        };
+
+        let dragItem = null; // Stores the id of the todo being dragged
+        let dragOverItem = null; // Stores the id of the todo being dragged over
+
+        // --- Firebase Initialization ---
+        async function initializeFirebase() {
+            console.log("initializeFirebase called.");
+            loadingSpinner.style.display = 'flex'; // Show loading spinner
+
+            if (Object.keys(firebaseConfig).length === 0) {
+                console.error("Firebase config is missing. Please ensure __firebase_config is set.");
+                loadingSpinner.style.display = 'none';
+                return;
+            }
+
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                console.log("Firebase app, db, auth initialized.");
+
+                onAuthStateChanged(auth, async (user) => {
+                    console.log("onAuthStateChanged triggered. User:", user);
+                    if (user) {
+                        currentUserId = user.uid;
+                        userIdDisplay.textContent = `Current User ID: ${currentUserId}`;
+                        userIdDisplay.style.display = 'block';
+                        console.log("User signed in:", currentUserId);
+                        setupTodoListener();
+                    } else {
+                        try {
+                            if (initialAuthToken) {
+                                console.log("Signing in with custom token...");
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                console.log("Signing in anonymously...");
+                                await signInAnonymously(auth);
+                            }
+                            // onAuthStateChanged will be triggered again after successful sign-in
+                        } catch (error) {
+                            console.error("Firebase authentication failed:", error);
+                            loadingSpinner.style.display = 'none';
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to initialize Firebase:", error);
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // --- Firestore Listener ---
+        function setupTodoListener() {
+            console.log("setupTodoListener called. currentUserId:", currentUserId);
+            if (!db || !currentUserId) {
+                console.warn("Firestore or User ID not available for listener setup. Retrying...");
+                // Add a small delay and retry if not immediately available, or rely on onAuthStateChanged
+                setTimeout(setupTodoListener, 500);
+                return;
+            }
+
+            const todosCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/todos`);
+            console.log("Listening to Firestore path:", `artifacts/${appId}/users/${currentUserId}/todos`);
+            const q = query(todosCollectionRef, orderBy('order', 'asc'));
+
+            onSnapshot(q, (snapshot) => {
+                console.log("onSnapshot triggered. New data received.");
+                todos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log("Updated todos array:", todos);
+                renderTodos();
+                loadingSpinner.style.display = 'none'; // Hide loading spinner once data is loaded
+            }, (error) => {
+                console.error("Error fetching todos with onSnapshot: ", error);
+                loadingSpinner.style.display = 'none';
+            });
+        }
+
+        // --- Theme Management ---
+        function applyTheme(themeName) {
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(themeName);
+            localStorage.setItem('todo-app-theme', themeName);
+            currentTheme = themeName;
+            updateThemeIcon();
+            console.log("Theme applied:", themeName);
+        }
+
+        function updateThemeIcon() {
+            if (currentTheme === 'dark') {
+                themeIcon.innerHTML = `<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>`;
+                themeIcon.classList.remove('text-gray-800');
+                themeIcon.classList.add('text-yellow-300');
+            } else {
+                themeIcon.innerHTML = `<path d="M10 2a1 1 1 10 10 2 1 1 0 000-2zm7 0a1 1 1 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm-7 0a1 1 1 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zM4 9a1 1 1 011 1v1a1 1 1 01-2 0V9a1 1 1 011-1zm12-1a1 1 1 011 1v1a1 1 1 01-2 0V9a1 1 1 011-1zm-1-1a1 1 1 011 1v1a1 1 1 01-2 0V8a1 1 1 011-1zM3 10a1 1 1 011 1v1a1 1 1 01-2 0v-1a1 1 1 011-1zM2 17a1 1 1 011 1v1a1 1 1 01-2 0v-1a1 1 1 011-1z"></path><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0 2a10 10 0 100-20 10 10 0 000 20z" clipRule="evenodd"></path>`;
+                themeIcon.classList.remove('text-yellow-300');
+                themeIcon.classList.add('text-gray-800');
+            }
+        }
+
+        // --- CRUD Operations ---
+        async function addTodo(text) {
+            console.log("addTodo called with text:", text);
+            if (!db || !currentUserId || !text.trim()) {
+                console.warn("Cannot add todo: DB, User ID, or text is missing/empty.");
+                return;
+            }
+
+            try {
+                // Get the current max order to add the new todo at the end
+                const newOrder = todos.length > 0 ? Math.max(...todos.map(t => t.order)) + 1 : 0;
+                console.log("New todo order:", newOrder);
+
+                const docRef = await addDoc(collection(db, `artifacts/${appId}/users/${currentUserId}/todos`), {
+                    text: text.trim(),
+                    completed: false,
+                    order: newOrder,
+                    userId: currentUserId,
+                    createdAt: new Date(),
+                });
+                console.log("Document successfully written with ID:", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+
+        async function toggleTodoComplete(id, currentStatus) {
+            console.log("toggleTodoComplete called for ID:", id, "current status:", currentStatus);
+            if (!db || !currentUserId) return;
+            try {
+                const todoRef = doc(db, `artifacts/${appId}/users/${currentUserId}/todos`, id);
+                await updateDoc(todoRef, {
+                    completed: !currentStatus
+                });
+                console.log("Todo status updated for ID:", id);
+            } catch (e) {
+                console.error("Error updating document: ", e);
+            }
+        }
+
+        async function deleteTodo(id) {
+            console.log("deleteTodo called for ID:", id);
+            if (!db || !currentUserId) return;
+            try {
+                await deleteDoc(doc(db, `artifacts/${appId}/users/${currentUserId}/todos`, id));
+                console.log("Todo deleted for ID:", id);
+            } catch (e) {
+                console.error("Error deleting document: ", e);
+            }
+        }
+
+        async function clearCompletedTodos() {
+            console.log("clearCompletedTodos called.");
+            if (!db || !currentUserId) return;
+            try {
+                const q = query(collection(db, `artifacts/${appId}/users/${currentUserId}/todos`), where('completed', '==', true));
+                const querySnapshot = await getDocs(q);
+                const batch = writeBatch(db);
+                console.log("Found", querySnapshot.size, "completed todos to delete.");
+
+                querySnapshot.forEach((document) => {
+                    batch.delete(document.ref);
+                });
+                await batch.commit();
+                console.log("Completed todos cleared successfully.");
+            } catch (e) {
+                console.error("Error clearing completed todos: ", e);
+            }
+        }
+
+        // --- Rendering Todos ---
+        function renderTodos() {
+            console.log("renderTodos called. Current filter:", currentFilter, "Todos to render:", todos.length);
+            todoListElement.innerHTML = ''; // Clear existing todos
+
+            const filtered = todos.filter(todo => {
+                if (currentFilter === 'active') return !todo.completed;
+                if (currentFilter === 'completed') return todo.completed;
+                return true; // 'all'
+            });
+            console.log("Filtered todos count:", filtered.length);
+
+            if (filtered.length === 0) {
+                todoListElement.innerHTML = `<p class="p-4 text-center text-gray-500">No todos to display.</p>`;
+            }
+
+            filtered.forEach((todo, index) => {
+                const todoItem = document.createElement('div');
+                todoItem.classList.add(
+                    'flex', 'items-center', 'p-4', 'border-b', 'todo-item-border-b',
+                    'group', // For hover effects on delete button
+                    'transition-colors', 'duration-200', 'cursor-grab',
+                    currentTheme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                );
+                todoItem.setAttribute('draggable', 'true');
+                todoItem.dataset.id = todo.id;
+                // No need to store todo.order as dataset, as we use the in-memory `todos` array for reordering.
+                // It's mainly for drag-and-drop reference and re-indexing after drag.
+
+                todoItem.innerHTML = `
+                    <button class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center
+                        ${todo.completed ? 'checkbox-gradient border-none' : (currentTheme === 'dark' ? 'border-gray-600' : 'border-gray-300')}
+                        hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+                        aria-label="${todo.completed ? 'Mark as incomplete' : 'Mark as complete'} ${todo.text}"
+                    >
+                        ${todo.completed ? `<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>` : ''}
+                    </button>
+                    <p class="flex-grow ml-4 ${todo.completed ? (currentTheme === 'dark' ? 'line-through text-gray-500' : 'line-through text-gray-400') : ''}">
+                        ${todo.text}
+                    </p>
+                    <button class="ml-auto p-1 rounded-full text-gray-400 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 transition-opacity duration-200"
+                        aria-label="Delete ${todo.text}"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                `;
+                todoListElement.appendChild(todoItem);
+
+                // Add event listeners for the dynamically created elements
+                todoItem.querySelector('button:first-child').addEventListener('click', () => toggleTodoComplete(todo.id, todo.completed));
+                todoItem.querySelector('button:last-child').addEventListener('click', () => deleteTodo(todo.id));
+
+                // Drag and drop events for each item
+                todoItem.addEventListener('dragstart', (e) => {
+                    dragItem = todo.id;
+                    e.dataTransfer.effectAllowed = "move";
+                    setTimeout(() => todoItem.classList.add('opacity-50'), 0); // Hide the dragged item temporarily
+                });
+
+                todoItem.addEventListener('dragenter', (e) => {
+                    e.preventDefault(); // Necessary to allow drop
+                    dragOverItem = todo.id;
+
+                    // Add highlight to the element being dragged over
+                    const children = Array.from(todoListElement.children);
+                    children.forEach(child => child.classList.remove('drag-over-highlight'));
+
+                    if (dragItem !== dragOverItem) {
+                        const draggedOverElement = children.find(child => child.dataset.id === dragOverItem);
+                        if (draggedOverElement) {
+                            draggedOverElement.classList.add('drag-over-highlight');
+                        }
+                    }
+                });
+
+                todoItem.addEventListener('dragleave', () => {
+                    todoItem.classList.remove('drag-over-highlight');
+                });
+
+                todoItem.addEventListener('dragend', () => {
+                    // Remove opacity and highlight from all items
+                    Array.from(todoListElement.children).forEach(child => {
+                        child.classList.remove('opacity-50', 'drag-over-highlight');
+                    });
+                    handleDragEnd();
+                });
+
+                todoItem.addEventListener('dragover', (e) => {
+                    e.preventDefault(); // Necessary to allow drop
+                });
+            });
+
+            itemsLeftSpan.textContent = `${todos.filter(todo => !todo.completed).length} items left`;
+            updateFilterButtons();
+        }
+
+        function updateFilterButtons() {
+            // Remove active classes from all filter buttons
+            Object.values(filterButtons).forEach(btn => {
+                if (btn) {
+                    btn.classList.remove('text-blue-500');
+                    btn.classList.add(currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-600');
+                    btn.setAttribute('aria-pressed', 'false');
+                }
+            });
+
+            // Add active class to the currently selected filter buttons
+            const activeButtons = [
+                filterButtons[currentFilter],
+                filterButtons[`mobile${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)}`]
+            ];
+            activeButtons.forEach(btn => {
+                if (btn) {
+                    btn.classList.add('text-blue-500');
+                    btn.classList.remove(currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-600');
+                    btn.setAttribute('aria-pressed', 'true');
+                }
+            });
+        }
+
+        // --- Drag and Drop Logic ---
+        async function handleDragEnd() {
+            console.log("handleDragEnd called. dragItem:", dragItem, "dragOverItem:", dragOverItem);
+            if (dragItem === null || dragOverItem === null || dragItem === dragOverItem) {
+                // No drag or no change in position
+                dragItem = null;
+                dragOverItem = null;
+                renderTodos(); // Ensure visual state is reset
+                return;
+            }
+
+            const oldIndex = todos.findIndex(t => t.id === dragItem);
+            const newIndex = todos.findIndex(t => t.id === dragOverItem);
+
+            if (oldIndex === -1 || newIndex === -1) {
+                console.error("Dragged or dropped item not found in current todos array.");
+                dragItem = null;
+                dragOverItem = null;
+                renderTodos();
+                return;
+            }
+
+            const newTodos = [...todos];
+            const [movedTodo] = newTodos.splice(oldIndex, 1); // Remove dragged item
+            newTodos.splice(newIndex, 0, movedTodo); // Insert at new position
+
+            // Update the 'order' field in Firestore for all affected todos
+            const batch = writeBatch(db);
+            newTodos.forEach((todo, index) => {
+                // Only update if the order has actually changed
+                if (todo.order !== index) {
+                    console.log(`Updating order for todo ID ${todo.id}: from ${todo.order} to ${index}`);
+                    batch.update(doc(db, `artifacts/${appId}/users/${currentUserId}/todos`, todo.id), { order: index });
+                }
+            });
+
+            try {
+                await batch.commit();
+                console.log("Todo order updated in Firestore. Batch committed.");
+                // onSnapshot will handle the state update automatically
+            } catch (error) {
+                console.error("Error updating todo order in Firestore:", error);
+            } finally {
+                dragItem = null;
+                dragOverItem = null;
+            }
+        }
+
+
+        // --- Event Listeners ---
+        newTodoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && newTodoInput.value.trim()) {
+                addTodo(newTodoInput.value);
+                newTodoInput.value = '';
+            }
+        });
+
+        clearCompletedButton.addEventListener('click', clearCompletedTodos);
+
+        themeToggleButton.addEventListener('click', () => {
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Filter button event listeners
+        filterButtons.all.addEventListener('click', () => { currentFilter = 'all'; renderTodos(); });
+        filterButtons.active.addEventListener('click', () => { currentFilter = 'active'; renderTodos(); });
+        filterButtons.completed.addEventListener('click', () => { currentFilter = 'completed'; renderTodos(); });
+        filterButtons.mobileAll.addEventListener('click', () => { currentFilter = 'all'; renderTodos(); });
+        filterButtons.mobileActive.addEventListener('click', () => { currentFilter = 'active'; renderTodos(); });
+        filterButtons.mobileCompleted.addEventListener('click', () => { currentFilter = 'completed'; renderTodos(); });
+
+
+        // --- Initial Setup on DOM Content Loaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load theme preference from localStorage on page load
+            const savedTheme = localStorage.getItem('todo-app-theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                applyTheme('dark'); // Default to dark theme if no preference found
+            }
+
+            initializeFirebase(); // Start Firebase initialization
+        });
+    </script>
+</body>
+</html>

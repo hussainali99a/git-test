@@ -1,0 +1,398 @@
+/* Variables for colors to easily switch themes */
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --primary-color: #6a0dad; /* Purple for characters */
+    --secondary-color: #ffa500; /* Orange for words */
+    --tertiary-color: #ff6347; /* Red/Orange for sentences */
+    --card-bg: #2b2b2b;
+    --border-color: #444;
+    --input-bg: #333;
+    --placeholder-color: #aaa;
+    --warning-color: #ffdd57; /* Yellowish for warning */
+    --button-hover: #8a2be2;
+    --focus-outline: 2px solid var(--primary-color);
+    --logo-color: #6A0DAD; /* Specific color for the logo */
+}
+
+/* Dark theme specific (default) */
+/* body.dark-theme { */
+    /* These are already set in :root, just for clarity */
+/* } */
+
+/* Light theme specific */
+body.light-theme {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #6a0dad;
+    --secondary-color: #ffa500;
+    --tertiary-color: #ff6347;
+    --card-bg: #f9f9f9;
+    --border-color: #e0e0e0;
+    --input-bg: #ffffff;
+    --placeholder-color: #666;
+    --warning-color: #e6b300;
+    --button-hover: #8a2be2;
+    --logo-color: #6A0DAD;
+}
+
+
+body {
+    font-family: Arial, sans-serif; /* Use your preferred font from the design */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* CSS for the 'D' logo */
+.css-logo {
+    width: 30px; /* Adjust size as needed */
+    height: 30px;
+    background-color: var(--logo-color); /* The purple color */
+    border-radius: 0 50% 50% 0; /* Half-circle on the right */
+    position: relative;
+    overflow: hidden; /* Hide anything outside this shape */
+}
+
+.css-logo::before {
+    content: '';
+    position: absolute;
+    top: 5px; /* Adjust for inner shape positioning */
+    left: 0;
+    width: 25px; /* Width of the negative space (the inner curve of D) */
+    height: 20px; /* Height of the negative space */
+    background-color: var(--bg-color); /* Background color to "cut out" the shape */
+    border-radius: 0 50% 50% 0; /* Creates the inner curve */
+    transform: translateX(5px); /* Move it slightly to the right to create the vertical bar */
+}
+
+
+.theme-switcher button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.theme-switcher button:hover,
+.theme-switcher button:focus {
+    background-color: var(--card-bg);
+    outline: var(--focus-outline);
+}
+
+main {
+    flex-grow: 1;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1.1em;
+    resize: vertical;
+    box-sizing: border-box; /* Include padding in width */
+    transition: border-color 0.3s ease;
+}
+
+textarea::placeholder {
+    color: var(--placeholder-color);
+}
+
+textarea:focus {
+    outline: var(--focus-outline);
+    border-color: var(--primary-color);
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: var(--card-bg);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+#character-limit-input {
+    width: 80px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1em;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#character-limit-input:focus {
+    outline: var(--focus-outline);
+    border-color: var(--primary-color);
+}
+
+#character-limit-input:disabled {
+    background-color: var(--card-bg);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.reading-time {
+    margin-left: auto; /* Pushes it to the right */
+    font-size: 0.9em;
+    color: var(--placeholder-color);
+}
+
+.warning-message {
+    color: var(--warning-color);
+    background-color: rgba(255, 221, 87, 0.1);
+    border: 1px solid var(--warning-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card span {
+    font-size: 3.5em;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.total-characters span { color: var(--primary-color); }
+.word-count span { color: var(--secondary-color); }
+.sentence-count span { color: var(--tertiary-color); }
+
+.stat-card p {
+    font-size: 1.1em;
+    color: var(--placeholder-color);
+}
+
+.letter-density {
+    margin-bottom: 40px;
+}
+
+.letter-density h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.letter-density-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.letter-density-item span:first-child {
+    font-weight: bold;
+    width: 25px; /* Fixed width for letter */
+    text-align: right;
+}
+
+.letter-density-bar {
+    flex-grow: 1;
+    height: 15px;
+    background-color: var(--primary-color); /* You might want to make this a gradient or distinct color */
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.letter-density-item span:last-child {
+    font-size: 0.9em;
+    color: var(--placeholder-color);
+    width: 60px; /* Fixed width for percentage */
+    text-align: right;
+}
+
+.show-more-button {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.show-more-button:hover,
+.show-more-button:focus {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+    outline: var(--focus-outline);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.2em;
+    }
+
+    .options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .reading-time {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero h1 {
+        font-size: 1.8em;
+    }
+
+    textarea {
+        min-height: 150px;
+    }
+
+    .stat-card span {
+        font-size: 2.8em;
+    }
+}
+
+/* Focus and Hover states for accessibility */
+button:focus,
+input[type="checkbox"]:focus + .checkmark,
+input[type="number"]:focus {
+    outline: var(--focus-outline);
+    outline-offset: 2px; /* Add a slight offset */
+}
