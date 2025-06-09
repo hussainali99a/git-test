@@ -1,0 +1,270 @@
+:root {
+    --clr-bg: #08070B;
+    --clr-surface-dark: #18171F;
+    --clr-surface-light: #24232C;
+    --clr-text-primary: #E6E5EA;
+    --clr-text-secondary: #817D92;
+    --clr-accent: #A4FFAF;
+    --clr-red: #F64A4A;
+    --clr-orange: #FB7C58;
+    --clr-yellow: #F8CD65;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--clr-bg);
+    color: var(--clr-text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+}
+
+.container {
+    width: 90vw;
+    max-width: 540px;
+    margin: 2rem 0;
+}
+
+h1 {
+    color: var(--clr-text-secondary);
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Display Section */
+.display-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--clr-surface-light);
+    padding: 1.25rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.display {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--clr-text-primary);
+    font-size: 2rem;
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+.display::placeholder {
+    color: var(--clr-text-secondary);
+    opacity: 0.75;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--clr-accent);
+}
+.copy-btn:hover {
+    color: var(--clr-text-primary);
+}
+.copy-btn svg {
+    width: 21px;
+    height: 24px;
+}
+.copy-feedback {
+    position: absolute;
+    right: 60px;
+    color: var(--clr-accent);
+    font-size: 1.125rem;
+    opacity: 0;
+    transition: opacity 300ms ease-in-out;
+}
+.copy-feedback.visible {
+    opacity: 1;
+}
+
+/* Controls Section */
+.controls-container {
+    background-color: var(--clr-surface-light);
+    padding: 1.5rem 2rem;
+}
+
+.char-length-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.char-length-number {
+    color: var(--clr-accent);
+    font-size: 2rem;
+}
+
+/* Custom Slider */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--clr-surface-dark);
+    outline: none;
+    margin-bottom: 2rem;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--clr-text-primary);
+    cursor: pointer;
+    transition: background 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+.slider::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--clr-text-primary);
+    cursor: pointer;
+    border: none;
+    transition: background 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+.slider::-webkit-slider-thumb:hover, .slider::-moz-range-thumb:hover {
+    background: var(--clr-surface-dark);
+    box-shadow: 0 0 0 2px var(--clr-accent);
+}
+
+/* Custom Checkboxes */
+.options {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.option input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--clr-text-primary);
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+}
+.option input[type="checkbox"]:hover {
+    border-color: var(--clr-accent);
+}
+.option input[type="checkbox"]::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background-color: var(--clr-accent);
+    transform: scale(0);
+    transition: transform 120ms ease-in-out;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='12'%3E%3Cpath fill='%2318171F' d='m1 5.917 2.125 2.125 8.5-8.5L13.75 1.5 3.125 12 0 8.875Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.option input[type="checkbox"]:checked {
+    background-color: var(--clr-accent);
+    border-color: var(--clr-accent);
+}
+.option input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+/* Strength Section */
+.strength-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--clr-surface-dark);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+.strength-label {
+    color: var(--clr-text-secondary);
+}
+.strength-indicator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.strength-text {
+    font-size: 1.5rem;
+}
+.strength-bars {
+    display: flex;
+    gap: 0.5rem;
+}
+.bar {
+    width: 10px;
+    height: 28px;
+    border: 2px solid var(--clr-text-primary);
+}
+/* Bar colors */
+.bar.weak { background-color: var(--clr-red); border-color: var(--clr-red); }
+.bar.medium { background-color: var(--clr-orange); border-color: var(--clr-orange); }
+.bar.strong { background-color: var(--clr-yellow); border-color: var(--clr-yellow); }
+.bar.very-strong { background-color: var(--clr-accent); border-color: var(--clr-accent); }
+
+/* Generate Button */
+.generate-btn {
+    width: 100%;
+    padding: 1.25rem;
+    background-color: var(--clr-accent);
+    color: var(--clr-surface-light);
+    border: 2px solid var(--clr-accent);
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: inherit;
+    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    transition: all 150ms ease-in-out;
+}
+.generate-btn:hover {
+    background-color: transparent;
+    color: var(--clr-accent);
+}
+.generate-btn:hover svg path {
+    fill: var(--clr-accent);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 500px) {
+    h1 {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+    }
+    .container {
+        width: 95vw;
+    }
+    .display-container {
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+    .display {
+        font-size: 1.5rem;
+    }
+    .controls-container {
+        padding: 1rem 1.25rem;
+    }
+    .strength-container {
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+}

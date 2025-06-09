@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Password Generator</h1>
+
+        <!-- Password Display -->
+        <div class="display-container">
+            <input readonly id="passwordDisplay" class="display" placeholder="P4$5W0rD!">
+            <div class="copy-feedback">COPIED</div>
+            <button id="copyBtn" class="copy-btn">
+                 <svg width="21" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M20.341 3.091 17.909.659A2.25 2.25 0 0 0 16.319 0H8.25A2.25 2.25 0 0 0 6 2.25V4.5H2.25A2.25 2.25 0 0 0 0 6.75v15A2.25 2.25 0 0 0 2.25 24h10.5A2.25 2.25 0 0 0 15 21.75V19.5h3.75A2.25 2.25 0 0 0 21 17.25V4.682a2.25 2.25 0 0 0-.659-1.591ZM12.469 21.75H2.53a.281.281 0 0 1-.281-.281V7.03a.281.281 0 0 1 .281-.281H6v10.5a2.25 2.25 0 0 0 2.25 2.25h4.5v1.969a.282.282 0 0 1-.281.281Zm6-4.5H8.53a.281.281 0 0 1-.281-.281V2.53a.281.281 0 0 1 .281-.281H16.03a.281.281 0 0 1 .281.281v10.5a2.25 2.25 0 0 0 2.25 2.25h1.969a.282.282 0 0 1-.281.281Z" fill="currentColor"/></svg>
+            </button>
+        </div>
+
+        <!-- Generator Controls -->
+        <div class="controls-container">
+            <!-- Character Length -->
+            <div class="char-length-container">
+                <label for="charLengthSlider">Character Length</label>
+                <span id="charLengthNumber" class="char-length-number">10</span>
+            </div>
+            <input type="range" min="1" max="20" value="10" id="charLengthSlider" class="slider">
+
+            <!-- Checkboxes -->
+            <div class="options">
+                <div class="option">
+                    <input type="checkbox" id="includeUppercase" checked>
+                    <label for="includeUppercase">Include Uppercase Letters</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="includeLowercase" checked>
+                    <label for="includeLowercase">Include Lowercase Letters</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="includeNumbers" checked>
+                    <label for="includeNumbers">Include Numbers</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="includeSymbols">
+                    <label for="includeSymbols">Include Symbols</label>
+                </div>
+            </div>
+
+            <!-- Strength Indicator -->
+            <div class="strength-container">
+                <span class="strength-label">STRENGTH</span>
+                <div id="strengthIndicator" class="strength-indicator">
+                    <span id="strengthText">MEDIUM</span>
+                    <div class="strength-bars">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button id="generateBtn" class="generate-btn">
+                <span>GENERATE</span>
+                <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path fill="#24232C" d="m5.106 12 6-6-6-6-1.265 1.265 3.841 3.84H.001v1.79h7.681l-3.841 3.84z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
